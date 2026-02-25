@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .nav-links a {
+            color: #2c3e50;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: #3498db;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .welcome-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .welcome-section h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .quick-actions {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .quick-actions h2 {
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .action-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2rem;
+            text-decoration: none;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">🏠 Hostel Management System</div>
+    <div class="nav-links">
+        <a href="/ui/dashboard" class="active">Dashboard</a>
+        <a href="/ui/allusers">Users</a>
+        <a href="/ui/allallotments">Allotments</a>
+        <a href="/ui/allmaintenances">Maintenance</a>
+        <a href="/ui/allnotifications">Notifications</a>
+        <a href="/ui/allreports">Reports</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="welcome-section">
+        <h1>Welcome to Hostel Management System</h1>
+        <p>Efficiently manage your hostel operations</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card" onclick="location.href='/ui/allusers'">
+            <div class="stat-number">👥</div>
+            <h3>Users</h3>
+            <p>Manage students and staff</p>
+        </div>
+        <div class="stat-card" onclick="location.href='/ui/allallotments'">
+            <div class="stat-number">🏠</div>
+            <h3>Room Allotments</h3>
+            <p>Assign rooms to students</p>
+        </div>
+        <div class="stat-card" onclick="location.href='/ui/allmaintenances'">
+            <div class="stat-number">🔧</div>
+            <h3>Maintenance</h3>
+            <p>Handle repair requests</p>
+        </div>
+        <div class="stat-card" onclick="location.href='/ui/allnotifications'">
+            <div class="stat-number">🔔</div>
+            <h3>Notifications</h3>
+            <p>System alerts & messages</p>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-grid">
+            <a href="/ui/createUser" class="action-card">
+                <h3>Add New User</h3>
+                <p>Register students or staff</p>
+            </a>
+            <a href="/ui/createAllotment" class="action-card">
+                <h3>Create Allotment</h3>
+                <p>Assign room to student</p>
+            </a>
+            <a href="/ui/createMaintenance" class="action-card">
+                <h3>Report Maintenance</h3>
+                <p>Create maintenance request</p>
+            </a>
+            <a href="/ui/createNotification" class="action-card">
+                <h3>Send Notification</h3>
+                <p>Broadcast message to users</p>
+            </a>
+            <a href="/ui/createReport" class="action-card">
+                <h3>Generate Report</h3>
+                <p>Create system report</p>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
