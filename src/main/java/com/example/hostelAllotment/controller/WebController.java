@@ -2,6 +2,7 @@ package com.example.hostelAllotment.controller;
 
 import com.example.hostelAllotment.model.dto.*;
 import com.example.hostelAllotment.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -192,4 +193,11 @@ public class WebController {
         reportService.deleteReport(id);
         return "redirect:/ui/allreports";
     }
+//    @GetMapping("/ui/dashboard")
+//    public String Dashboard(HttpSession session, Model model) {
+//        if (session.getAttribute("UserId") == null) {
+//            return "redirect:/login";
+//        }
+//        return "dashboard";
+//    }
 }

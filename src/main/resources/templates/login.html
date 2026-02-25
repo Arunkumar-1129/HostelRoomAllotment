@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hostel Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .logo p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+        }
+        .signup-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        .alert-error {
+            background: #fde8e8;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+            display: block;
+        }
+        .alert-success {
+            background: #e8f5e8;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+            display: block;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            color: #3498db;
+        }
+        .loading.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="login-card">
+        <div class="logo">
+            <h1>🏠 Hostel Management</h1>
+            <p>Login to your account</p>
+        </div>
+
+        <div id="errorAlert" class="alert alert-error" style="display: none;"></div>
+        <div id="successAlert" class="alert alert-success" style="display: none;"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn-login" id="loginBtn">Login</button>
+            <div id="loading" class="loading">Logging in...</div>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account? <a href="/signup">Sign up here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Hide any previous alerts
+        document.getElementById('errorAlert').style.display = 'none';
+        document.getElementById('successAlert').style.display = 'none';
+
+        // Show loading
+        document.getElementById('loading').classList.add('active');
+        document.getElementById('loginBtn').disabled = true;
+
+        try {
+            // Call your API endpoint: /login/{email}/{password}
+            const response = await fetch(`/login/${encodeURIComponent(email)}/${encodeURIComponent(password)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+
+                // Store user data in session storage
+                sessionStorage.setItem('loggedInUser', JSON.stringify(userData));
+                sessionStorage.setItem('userId', userData.userId);
+                sessionStorage.setItem('userRole', userData.role);
+                sessionStorage.setItem('userName', userData.name);
+
+                // Show success message
+                document.getElementById('successAlert').textContent = 'Login successful! Redirecting to dashboard...';
+                document.getElementById('successAlert').style.display = 'block';
+
+                // Redirect to dashboard after 1 second
+                setTimeout(() => {
+                    window.location.href = '/ui/dashboard';
+                }, 1000);
+            } else if (response.status === 404) {
+                // User not found
+                document.getElementById('errorAlert').textContent = 'Invalid email or password';
+                document.getElementById('errorAlert').style.display = 'block';
+            } else {
+                // Other error
+                document.getElementById('errorAlert').textContent = 'Login failed. Please try again.';
+                document.getElementById('errorAlert').style.display = 'block';
+            }
+        } catch (error) {
+            document.getElementById('errorAlert').textContent = 'Network error. Please check your connection.';
+            document.getElementById('errorAlert').style.display = 'block';
+            console.error('Login error:', error);
+        } finally {
+            // Hide loading
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('loginBtn').disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
